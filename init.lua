@@ -1,4 +1,3 @@
-
 local opt = vim.opt
 local g = vim.g
 
@@ -14,7 +13,10 @@ opt.tabstop = 2
 opt.splitright = true
 opt.splitbelow = true
 opt.smartindent = true
-opt.expandtab = true 
+opt.expandtab = true
+opt.laststatus = 3
+opt.cursorline = true
+opt.scrolloff = 8
 
 -- [[ Other ]]
 opt.clipboard = 'unnamedplus' 
@@ -71,17 +73,40 @@ require('packer').startup(function(use)
   use {"lewis6991/gitsigns.nvim"}
   use {"nvim-telescope/telescope.nvim", tag = "0.1.0", requires = 'nvim-lua/plenary.nvim'}
   use {"p00f/clangd_extensions.nvim"}
+  use {"ellisonleao/glow.nvim"}
+  use {"simrat39/rust-tools.nvim"}
 end)
 
 -- [[ Plugins setup]]
-require("neo-tree").setup({
-  source_selector = {
-    statusline = true
+
+require("nightfox").setup({
+  options = {
+    modules = {
+      cmp = true,
+      gitsigns = true,
+      neotree = true,
+      telescope = true,
+      native_lsp = {
+        enable = true,
+      },
+      treesitter = true,
+    }
   },
-  view = {
-    adaptive_size = true
+  groups = {
+    all = {
+      WinSeparator = {
+        fg = "palette.bg4"
+      },
+      TerminalNormal = {
+        bg = "palette.bg0"
+      },
+    }
   }
 })
+
+vim.cmd [[colorscheme nightfox]]
+
+require("neo-tree").setup()
 
 require("bufferline").setup({
   options = {
@@ -107,8 +132,6 @@ require('close_buffers').setup({
     end
   end,
 })
-
-vim.cmd [[colorscheme nightfox]]
 
 require('lualine').setup({ 
   options = {
@@ -172,7 +195,11 @@ cmp.setup({
       end
     end, { "i", "s" }),
   }),
-})
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered() 
+  }  
+ })
 
 cmp.setup.cmdline('/', {
   mapping = cmp.mapping.preset.cmdline(),
@@ -190,6 +217,19 @@ cmp.setup.cmdline(':', {
   })
 })
 
+local on_attach = function(client, bufnr)
+  local bufopts = { noremap=true, buffer=bufnr }
+  map('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  map('n', 'gd', vim.lsp.buf.definition, bufopts)
+  map('n', 'H', vim.lsp.buf.hover, bufopts)
+  map('n', '<A-r>', vim.lsp.buf.rename, bufopts)
+  map('n', '<A-a>', vim.lsp.buf.code_action, bufopts)
+  map('n', 'gr', vim.lsp.buf.references, bufopts)
+  map('n', '<A-f>', vim.lsp.buf.formatting, bufopts)
+end
+
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 require("clangd_extensions").setup {
   server = {
     cmd = {
@@ -201,22 +241,35 @@ require("clangd_extensions").setup {
       "--inlay-hints"
     },
     filetypes = { "c", "cpp" },
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
-    on_attach = function(client, bufnr)
-      local bufopts = { noremap=true, buffer=bufnr }
-      map('n', 'gD', vim.lsp.buf.declaration, bufopts)
-      map('n', 'gd', vim.lsp.buf.definition, bufopts)
-      map('n', 'H', vim.lsp.buf.hover, bufopts)
-      map('n', '<A-r>', vim.lsp.buf.rename, bufopts)
-      map('n', '<A-a>', vim.lsp.buf.code_action, bufopts)
-      map('n', 'gr', vim.lsp.buf.references, bufopts)
-      map('n', '<A-f>', vim.lsp.buf.formatting, bufopts)
-    end,
+    capabilities = capabilities,
+    on_attach = on_attach,
     root_dir = require("lspconfig").util.root_pattern(".root") 
   },
   inlay_hints = {
     right_align = true
   }
+}
+
+require("rust-tools").setup {
+  server = {
+    settings = {
+      ["rust-analyzer"] = {
+        checkOnSave = {
+          command = "clippy"
+        },
+      }
+    },
+    capabilities = capabilities,
+    on_attach = on_attach
+  },
+  tools = {
+    autoSetHints = true,
+    inlay_hints = {
+      show_parameter_hints = false,
+      parameter_hints_prefix = "",
+      other_hints_prefix = "",
+    },
+  },
 }
 
 require("indent_blankline").setup {
@@ -233,9 +286,20 @@ cmp.event:on(
 
 require('gitsigns').setup()
 
-require('telescope').setup{}
+require('telescope').setup()
+
+require('glow').setup({
+  border = "rounded"
+})
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+  border = "rounded",
+})
+
+require('lspconfig.ui.windows').default_options.border = 'single'
 
 -- [[ Maps ]]
+
 map("i", "jj", "<Esc>")
 map("n", "<A-b>", "<cmd>Neotree left toggle<CR>")
 map("n", "|", "<cmd>Neotree reveal<CR>")
@@ -244,7 +308,8 @@ map("", "<Left>", "<cmd>echoe 'Use h'<CR>")
 map("", "<Right>", "<cmd>echoe 'Use l'<CR>")
 map("", "<Up>", "<cmd>echoe 'Use k'<CR>")
 map("", "<Down>", "<cmd>echoe 'Use j'<CR>")
-map("t", "<Esc>", "<C-\\><C-N>h")
+map("t", "<Esc>", "<C-\\><C-N>")
+map("t", "jj", "<C-\\><C-N>")
 map("n", "<leader>ff", "<cmd>lua require('close_buffers').delete({type = 'this', force = true})<CR>")
 map("n", "<leader>c", "<cmd>lua require('close_buffers').delete({type = 'this'})<CR>")
 map("n", "<leader>h", "<cmd>lua require('close_buffers').delete({type = 'nameless', force = true})<CR>")
@@ -257,18 +322,30 @@ map('v', '<A-p>', '"0p')
 map("n", "<C-p>", "<cmd>bp<CR>")
 map("n", "<C-n>", "<cmd>bn<CR>")
 
-map("t", "<A-h>", "<C-\\><C-N><C-w>h")
-map("t", "<A-j>", "<C-\\><C-N><C-w>j")
-map("t", "<A-k>", "<C-\\><C-N><C-w>k")
-map("t", "<A-l>", "<C-\\><C-N><C-w>l")
-map("i", "<A-h>", "<C-\\><C-N><C-w>h")
-map("i", "<A-j>", "<C-\\><C-N><C-w>j")
-map("i", "<A-k>", "<C-\\><C-N><C-w>k")
-map("i", "<A-l>", "<C-\\><C-N><C-w>l")
-map("n", "<A-h>", "<C-w>h")
-map("n", "<A-j>", "<C-w>j")
-map("n", "<A-k>", "<C-w>k")
-map("n", "<A-l>", "<C-w>l")
+map("t", "<C-h>", "<C-\\><C-N><C-w>h")
+map("t", "<C-j>", "<C-\\><C-N><C-w>j")
+map("t", "<C-k>", "<C-\\><C-N><C-w>k")
+map("t", "<C-l>", "<C-\\><C-N><C-w>l")
+map("i", "<C-h>", "<C-\\><C-N><C-w>h")
+map("i", "<C-j>", "<C-\\><C-N><C-w>j")
+map("i", "<C-k>", "<C-\\><C-N><C-w>k")
+map("i", "<C-l>", "<C-\\><C-N><C-w>l")
+map("n", "<C-h>", "<C-w>h")
+map("n", "<C-j>", "<C-w>j")
+map("n", "<C-k>", "<C-w>k")
+map("n", "<C-l>", "<C-w>l")
 
 vim.cmd [[cnoreabbrev H vert bo h]]
+
+-- [[ Events ]]
+
+function set_terminal_highlight()
+  vim.opt_local.winhighlight = "Normal:TerminalNormal"
+  vim.opt_local.number = false
+  vim.opt_local.relativenumber = false
+end
+
+vim.api.nvim_create_autocmd("TermOpen", {
+  callback = set_terminal_highlight
+})
 
