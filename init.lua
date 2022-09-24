@@ -134,11 +134,8 @@ require('close_buffers').setup({
 })
 
 require('lualine').setup({ 
-  options = {
-    disabled_filetypes = {
-      statusline = {"neo-tree"},
-      winbar = {}
-    },
+  sections = {
+    lualine_c = {"%F"}
   }
 })
 
@@ -310,9 +307,14 @@ map("", "<Up>", "<cmd>echoe 'Use k'<CR>")
 map("", "<Down>", "<cmd>echoe 'Use j'<CR>")
 map("t", "<Esc>", "<C-\\><C-N>")
 map("t", "jj", "<C-\\><C-N>")
-map("n", "<leader>ff", "<cmd>lua require('close_buffers').delete({type = 'this', force = true})<CR>")
-map("n", "<leader>c", "<cmd>lua require('close_buffers').delete({type = 'this'})<CR>")
-map("n", "<leader>h", "<cmd>lua require('close_buffers').delete({type = 'nameless', force = true})<CR>")
+map("n", "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<CR>")
+map("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<CR>")
+map("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<CR>")
+map("n", "<leader>fc", "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>")
+map("n", "<leader>fr", "<cmd>lua require('telescope.builtin').resume()<CR>")
+map("n", "<leader>bf", "<cmd>lua require('close_buffers').delete({type = 'this', force = true})<CR>")
+map("n", "<leader>bc", "<cmd>lua require('close_buffers').delete({type = 'this'})<CR>")
+map("n", "<leader>bh", "<cmd>lua require('close_buffers').delete({type = 'nameless', force = true})<CR>")
 map("n", "<C-t>", "<cmd>split | term<CR><cmd>res 15<CR> i")
 map('n', '<A-e>', vim.diagnostic.show)
 map('n', '<A-d>', vim.diagnostic.hide)
