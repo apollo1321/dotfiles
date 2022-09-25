@@ -171,7 +171,7 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-e>'] = cmp.mapping.close(),
+    ['<C-e>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
@@ -184,7 +184,7 @@ cmp.setup({
         fallback()
       end
     end, { "i", "s" }),
-    ["<A-Tab>"] = cmp.mapping(function()
+    ["<S-Tab>"] = cmp.mapping(function()
       if cmp.visible() then
         cmp.select_prev_item()
       elseif vim.fn["vsnip#jumpable"](-1) == 1 then
@@ -320,6 +320,8 @@ map('n', '<A-e>', vim.diagnostic.show)
 map('n', '<A-d>', vim.diagnostic.hide)
 map('n', '<A-p>', '"0p')
 map('v', '<A-p>', '"0p')
+map('n', '<A-s>', '<cmd>w<CR>')
+map('n', '<A-h>', '<cmd>lua vim.diagnostic.open_float({ border = "rounded"})<CR>')
 
 map("n", "<C-p>", "<cmd>bp<CR>")
 map("n", "<C-n>", "<cmd>bn<CR>")
