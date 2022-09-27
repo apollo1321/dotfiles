@@ -177,7 +177,7 @@ cmp.setup({
         fallback()
       end
     end, { "i", "s" }),
-    ["<A-Tab>"] = cmp.mapping(function()
+    ["<S-Tab>"] = cmp.mapping(function()
       if cmp.visible() then
         cmp.select_prev_item()
       elseif vim.fn["vsnip#jumpable"](-1) == 1 then
@@ -319,8 +319,12 @@ map('n', '<A-e>', vim.diagnostic.show)
 map('n', '<A-d>', vim.diagnostic.hide)
 map('n', '<A-p>', '"0p')
 map('v', '<A-p>', '"0p')
+
 map("n", "gsp", "<cmd>Gitsigns preview_hunk<CR>")
 map("n", "gsa", "<cmd>Gitsigns stage_hunk<CR>")
+
+map('n', '<A-s>', '<cmd>w<CR>')
+map('n', '<A-h>', '<cmd>lua vim.diagnostic.open_float({ border = "rounded"})<CR>')
 
 map("n", "<C-p>", "<cmd>bp<CR>")
 map("n", "<C-n>", "<cmd>bn<CR>")
