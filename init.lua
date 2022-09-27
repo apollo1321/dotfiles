@@ -25,7 +25,9 @@ opt.completeopt = 'menuone,noselect'
 opt.termguicolors = true
 opt.mouse = nil
 opt.signcolumn = "yes"
-g.material_style = "darker"
+
+g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
 
 -- [[ Functions ]]
 function map(mode, lhs, rhs, opts)
@@ -42,14 +44,6 @@ vim.cmd [[packadd packer.nvim]]
 require('packer').startup(function(use) 
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
   use {'wbthomason/packer.nvim'}
-  use {'nvim-neo-tree/neo-tree.nvim', 
-    requires = {
-      'kyazdani42/nvim-web-devicons',
-      'nvim-lua/plenary.nvim',
-      'MunifTanjim/nui.nvim'
-    },
-    branch = "v2.x"
-  }
   use {'akinsho/bufferline.nvim', requires = 'kyazdani42/nvim-web-devicons', tag = "v2.*"}
   use {'EdenEast/nightfox.nvim'}
   use {'nvim-lualine/lualine.nvim', requires = 'kyazdani42/nvim-web-devicons'}
@@ -75,6 +69,7 @@ require('packer').startup(function(use)
   use {"p00f/clangd_extensions.nvim"}
   use {"ellisonleao/glow.nvim"}
   use {"simrat39/rust-tools.nvim"}
+  use {"kyazdani42/nvim-tree.lua", requires = 'kyazdani42/nvim-web-devicons'}
 end)
 
 -- [[ Plugins setup]]
@@ -84,12 +79,12 @@ require("nightfox").setup({
     modules = {
       cmp = true,
       gitsigns = true,
-      neotree = true,
       telescope = true,
       native_lsp = {
         enable = true,
       },
       treesitter = true,
+      nvimtree = true,
     }
   },
   groups = {
@@ -104,16 +99,14 @@ require("nightfox").setup({
   }
 })
 
-vim.cmd [[colorscheme nightfox]]
-
-require("neo-tree").setup()
+vim.cmd [[colorscheme nordfox]]
 
 require("bufferline").setup({
   options = {
     numbers = "buffer_id",
     offsets = {{
-      filetype = "neo-tree",
-      text = "File Explorer",
+      filetype = "NvimTree",
+      text = "NvimTree",
       highlight = "Directory",
       text_align = "center",
       separator = true
@@ -172,7 +165,7 @@ cmp.setup({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm(),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -295,12 +288,18 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 
 require('lspconfig.ui.windows').default_options.border = 'single'
 
+require('nvim-tree').setup({
+  view = {
+    width = "20%"
+  },
+  renderer = {
+    symlink_destination = false
+  }
+})
+
 -- [[ Maps ]]
 
 map("i", "jj", "<Esc>")
-map("n", "<A-b>", "<cmd>Neotree left toggle<CR>")
-map("n", "|", "<cmd>Neotree reveal<CR>")
-map("n", "<leader>s", "<cmd>Neotree float git_status<CR>")
 map("", "<Left>", "<cmd>echoe 'Use h'<CR>")
 map("", "<Right>", "<cmd>echoe 'Use l'<CR>")
 map("", "<Up>", "<cmd>echoe 'Use k'<CR>")
@@ -320,9 +319,17 @@ map('n', '<A-e>', vim.diagnostic.show)
 map('n', '<A-d>', vim.diagnostic.hide)
 map('n', '<A-p>', '"0p')
 map('v', '<A-p>', '"0p')
+map("n", "gsp", "<cmd>Gitsigns preview_hunk<CR>")
+map("n", "gsa", "<cmd>Gitsigns stage_hunk<CR>")
 
 map("n", "<C-p>", "<cmd>bp<CR>")
 map("n", "<C-n>", "<cmd>bn<CR>")
+map("t", "<C-p>", "<C-\\><C-N><cmd>bp<CR>")
+map("t", "<C-n>", "<C-\\><C-N><cmd>bn<CR>")
+
+map("n", "<A-b>", "<cmd>NvimTreeToggle<CR>")
+map("n", "|", "<cmd>NvimTreeFindFile<CR>")
+map("t", "<A-b>", "<C-\\><C-N><cmd>NvimTreeToggle<CR>")
 
 map("t", "<C-h>", "<C-\\><C-N><C-w>h")
 map("t", "<C-j>", "<C-\\><C-N><C-w>j")
