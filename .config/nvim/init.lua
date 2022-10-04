@@ -8,6 +8,7 @@ opt.number = true
 opt.relativenumber = true
 
 -- [[ Tabs ]]
+
 opt.shiftwidth = 2
 opt.tabstop = 2
 opt.splitright = true
@@ -19,6 +20,7 @@ opt.cursorline = true
 opt.scrolloff = 8
 
 -- [[ Other ]]
+
 opt.clipboard = 'unnamedplus' 
 opt.fixeol = true
 opt.completeopt = 'menuone,noselect'
@@ -30,6 +32,7 @@ g.loaded_netrw = 1
 g.loaded_netrwPlugin = 1
 
 -- [[ Functions ]]
+
 function map(mode, lhs, rhs, opts)
   if opts then
     vim.keymap.set(mode, lhs, rhs, opts)
@@ -39,7 +42,19 @@ function map(mode, lhs, rhs, opts)
 end
 
 -- [[ Plugins ]]
-vim.cmd [[packadd packer.nvim]]
+
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
 
 require('packer').startup(function(use) 
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
@@ -70,6 +85,10 @@ require('packer').startup(function(use)
   use {"ellisonleao/glow.nvim"}
   use {"simrat39/rust-tools.nvim"}
   use {"kyazdani42/nvim-tree.lua", requires = 'kyazdani42/nvim-web-devicons'}
+
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)
 
 -- [[ Plugins setup]]
