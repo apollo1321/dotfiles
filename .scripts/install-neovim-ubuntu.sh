@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-source ~/.scripts/colors.sh
+set -e
+
+source colors.sh
 
 info "Adding neovim repo\n"
+apt-get install software-properties-common
 add-apt-repository ppa:neovim-ppa/stable
 apt update
 info "Installing neovim\n"
