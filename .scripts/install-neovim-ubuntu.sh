@@ -5,16 +5,13 @@ set -e
 source colors.sh
 
 info "Adding neovim repo\n"
-apt-get install software-properties-common
-add-apt-repository ppa:neovim-ppa/stable
+apt-get install -y software-properties-common
+add-apt-repository -y ppa:neovim-ppa/stable
 apt update
 info "Installing neovim\n"
-apt install neovim
+apt install -y neovim
 info "Installed neovim:\n $(eval nvim --version)"
 
 info "Installing tools for telescope plugin\n"
-info "Installing ripgrep\n"
-apt install ripgrep
-info "Installing fd-find\n"
-apt install fd-find
+apt install -y ripgrep fd-find
 
