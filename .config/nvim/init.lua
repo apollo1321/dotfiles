@@ -57,7 +57,11 @@ end
 local packer_bootstrap = ensure_packer()
 
 require('packer').startup(function(use) 
-  use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+  use {'nvim-treesitter/nvim-treesitter', 
+    run = function() 
+      require('nvim-treesitter.install').update({ with_sync = true }) 
+    end
+  }
   use {'wbthomason/packer.nvim'}
   use {'akinsho/bufferline.nvim', requires = 'kyazdani42/nvim-web-devicons', tag = "v2.*"}
   use {'EdenEast/nightfox.nvim'}
@@ -93,6 +97,8 @@ end)
 
 -- [[ Plugins setup]]
 
+vim.cmd [[colorscheme nordfox]]
+
 require("nightfox").setup({
   options = {
     modules = {
@@ -117,8 +123,6 @@ require("nightfox").setup({
     }
   }
 })
-
-vim.cmd [[colorscheme nordfox]]
 
 require("bufferline").setup({
   options = {
