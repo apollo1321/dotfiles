@@ -70,7 +70,7 @@ map('n', '<A-e>', vim.diagnostic.show)
 map('n', '<A-d>', vim.diagnostic.hide)
 map('n', '<A-r>', vim.lsp.buf.rename)
 map('n', '<A-a>', vim.lsp.buf.code_action)
-map('n', '<A-h>', '<cmd>lua vim.diagnostic.open_float({ border = "rounded"})<CR>')
+map('n', '<A-h>', '<cmd>lua vim.diagnostic.open_float()<CR>')
 if vim.version().minor >= 8 then
   map('n', '<A-f>', '<cmd>lua vim.lsp.buf.format({ asyn = true })<CR>')
 else

@@ -7,7 +7,7 @@ end
 require("options")
 require("keybindings")
 require("abbreviations")
-require("autocmd")
+require("autocmds")
 
 require("plugins")
 

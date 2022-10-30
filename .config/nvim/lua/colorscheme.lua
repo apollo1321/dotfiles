@@ -9,6 +9,11 @@ require("nightfox").setup({
       },
       treesitter = true,
       nvimtree = true,
+    },
+    styles = {
+      types = "bold",
+      functions = "bold",
+      comments = "italic"
     }
   },
   groups = {
@@ -19,6 +24,9 @@ require("nightfox").setup({
       TerminalNormal = {
         bg = "palette.bg0"
       },
+      NormalFloat = {
+        bg = "bg3"
+      }
     }
   }
 })
