@@ -4,16 +4,30 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protoc
 
 -- [[ C/C++ ]]
 
+local clangd_cmd = {
+  "clangd",
+  "--header-insertion=never",
+  "--background-index",
+  "--clang-tidy",
+  "-j=4",
+  "--inlay-hints"
+}
+
+if Work then
+  clangd_cmd = {
+    "clangd",
+    "--header-insertion=never",
+    "--background-index",
+    "--clang-tidy",
+    "-j=16",
+    "--compile-commands-dir=~/workspace",
+    "--background-index-priority=normal",
+  }
+end
+
 require("clangd_extensions").setup {
   server = {
-    cmd = {
-      "clangd",
-      "--header-insertion=never",
-      "--background-index",
-      "--clang-tidy",
-      "-j=4",
-      "--inlay-hints"
-    },
+    cmd = clangd_cmd,
     filetypes = { "c", "cpp" },
     capabilities = capabilities,
     root_dir = require("lspconfig").util.root_pattern(".root")

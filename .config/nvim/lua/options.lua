@@ -12,7 +12,6 @@ opt.mouse = nil
 opt.number = true
 opt.relativenumber = true
 opt.scrolloff = 8
-opt.shiftwidth = 2
 opt.showmatch = true
 opt.signcolumn = "yes"
 opt.smartcase = true
@@ -21,6 +20,12 @@ opt.splitbelow = true
 opt.splitright = true
 opt.tabstop = 2
 opt.termguicolors = true
+
+if Work then
+  opt.shiftwidth = 2
+else
+  opt.shiftwidth = 2
+end
 
 g.loaded_netrw = 1
 g.loaded_netrwPlugin = 1

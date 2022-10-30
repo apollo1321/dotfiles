@@ -21,7 +21,6 @@ require('packer').startup({ function(use)
   use { "ellisonleao/glow.nvim" }
   use { "kazhala/close-buffers.nvim" }
   use { "kyazdani42/nvim-tree.lua" }
-  use { "lewis6991/gitsigns.nvim" }
   use { "lukas-reineke/indent-blankline.nvim" }
   use { "nvim-telescope/telescope.nvim", tag = "0.1.0" }
   use { "p00f/clangd_extensions.nvim" }
@@ -36,12 +35,19 @@ require('packer').startup({ function(use)
   use { 'hrsh7th/cmp-path' }
   use { 'hrsh7th/cmp-vsnip' }
   use { 'hrsh7th/nvim-cmp' }
-  use { 'hrsh7th/nvim-cmp' }
   use { 'hrsh7th/vim-vsnip' }
   use { 'kyazdani42/nvim-web-devicons' }
   use { 'neovim/nvim-lspconfig' }
+  use { 'nvim-lua/plenary.nvim' }
   use { 'nvim-lualine/lualine.nvim' }
+  use { 'ojroques/vim-oscyank' }
   use { 'wbthomason/packer.nvim' }
+
+  if Work then
+    use { "~/arcadia/junk/kuzns/gitsigns.nvim_with_arc_support" }
+  else
+    use { "lewis6991/gitsigns.nvim" }
+  end
 
   if packer_bootstrap then
     require('packer').sync()

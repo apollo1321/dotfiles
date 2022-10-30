@@ -34,6 +34,8 @@ map("n", "<C-p>", "<cmd>bp<CR>")
 map("n", "<C-n>", "<cmd>bn<CR>")
 map("t", "<C-p>", "<C-\\><C-N><cmd>bp<CR>")
 map("t", "<C-n>", "<C-\\><C-N><cmd>bn<CR>")
+map('', "<A-u>", "10k")
+map('', "<A-d>", "10j")
 
 -- [[ registers ]]
 map('n', '<A-p>', '"0p')
@@ -69,7 +71,11 @@ map('n', '<A-d>', vim.diagnostic.hide)
 map('n', '<A-r>', vim.lsp.buf.rename)
 map('n', '<A-a>', vim.lsp.buf.code_action)
 map('n', '<A-h>', '<cmd>lua vim.diagnostic.open_float({ border = "rounded"})<CR>')
-map('n', '<A-f>', '<cmd>lua vim.lsp.buf.format({ asyn = true })<CR>')
+if vim.version().minor >= 8 then
+  map('n', '<A-f>', '<cmd>lua vim.lsp.buf.format({ asyn = true })<CR>')
+else
+  map('n', '<A-f>', vim.lsp.buf.formatting)
+end
 map('n', 'gD', vim.lsp.buf.declaration)
 map('n', 'gd', vim.lsp.buf.definition)
 map('n', 'gr', vim.lsp.buf.references)

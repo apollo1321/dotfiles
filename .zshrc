@@ -30,5 +30,25 @@ fi
 bindkey '^ ' autosuggest-accept
 
 alias ls="ls --color=auto"
+alias la="ls -a"
+
+alias aa="arc add"
+alias ab="arc branch"
+alias ac="arc commit"
+alias ac!="arc commit --amend --no-edit"
+alias aco="arc checkout"
+alias ad="arc diff"
+alias aprc="arc pr create --push"
+alias ast="arc status"
+alias ap="arc push"
+alias ap!="arc push --force"
+alias ast="arc st"
+alias apl="arc pull"
+alias arb="arc rebase"
 
 source "${HOME}/.p10k.zsh"
+
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt appendhistory
