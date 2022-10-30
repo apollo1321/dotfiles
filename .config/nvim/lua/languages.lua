@@ -18,7 +18,7 @@ if Work then
     "--background-index",
     "--clang-tidy",
     "-j=16",
-    "--compile-commands-dir=~/workspace",
+    "--compile-commands-dir=/home/apollo1321/workspace",
     "--background-index-priority=normal",
   }
 end

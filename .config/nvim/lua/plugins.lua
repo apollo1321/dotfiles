@@ -78,10 +78,7 @@ require('gitsigns').setup()
 
 require('telescope').setup()
 
--- require('glow').setup({
---   border = "single"
--- })
-
+require('glow').setup()
 
 require("bufferline").setup({
   options = {

@@ -46,6 +46,19 @@ alias ast="arc st"
 alias apl="arc pull"
 alias arb="arc rebase"
 
+alias ga="git add"
+alias gb="git branch"
+alias gc="git commit"
+alias gc!="git commit --amend --no-edit"
+alias gco="git checkout"
+alias gd="git diff"
+alias gst="git status"
+alias gp="git push"
+alias gp!="git push --force"
+alias gst="git st"
+alias gpl="git pull"
+alias grb="git rebase"
+
 source "${HOME}/.p10k.zsh"
 
 HISTFILE=~/.zsh_history
