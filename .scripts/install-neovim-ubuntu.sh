@@ -2,7 +2,7 @@
 
 set -e
 
-source colors.sh
+source ~/.scripts/colors.sh
 
 info "Adding neovim repo\n"
 apt-get install -y software-properties-common
@@ -14,4 +14,3 @@ info "Installed neovim:\n $(eval nvim --version)\n"
 
 info "Installing tools for telescope plugin\n"
 apt install -y ripgrep fd-find
-
