@@ -22,7 +22,7 @@ opt.tabstop = 2
 opt.termguicolors = true
 
 if Work then
-  opt.shiftwidth = 2
+  opt.shiftwidth = 4
 else
   opt.shiftwidth = 2
 end

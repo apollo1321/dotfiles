@@ -13,6 +13,7 @@ local packer_bootstrap = ensure_packer()
 
 require('packer').startup({ function(use)
   use { 'nvim-treesitter/nvim-treesitter',
+    commit = "c8533707679b99dc80d5f46f7b519081fb9c1ac9",
     run = function()
       require('nvim-treesitter.install').update({ with_sync = true })
     end
