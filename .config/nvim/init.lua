@@ -1,8 +1,4 @@
-if os.getenv("WORK") then
-  Work = true
-else
-  Work = false
-end
+require("env")
 
 require("options")
 require("keybindings")

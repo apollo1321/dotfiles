@@ -18,7 +18,7 @@ if Work then
     "--background-index",
     "--clang-tidy",
     "-j=16",
-    "--compile-commands-dir=/home/apollo1321/workspace",
+    string.format('--compile-commands-dir=%s/workspace', os.getenv('HOME')),
     "--background-index-priority=normal",
   }
 end
@@ -60,22 +60,47 @@ require("rust-tools").setup {
 
 -- [[ lua ]]
 
-require("lspconfig").sumneko_lua.setup {
-  settings = {
-    Lua = {
-      runtime = {
-        version = 'LuaJIT',
-      },
-      diagnostics = {
-        globals = { 'vim' },
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file("", true),
-      },
-      telemetry = {
-        enable = false,
+local lua_settings = {
+  runtime = {
+    version = 'LuaJIT',
+  },
+  diagnostics = {
+    globals = { 'vim' },
+  },
+  workspace = {
+    library = vim.api.nvim_get_runtime_file("", true),
+  },
+  telemetry = {
+    enable = false,
+  },
+}
+
+if Hs then
+  local hs_version = vim.fn.system('hs -c _VERSION'):gsub('[\n\r]', '')
+  local hs_path = vim.split(vim.fn.system('hs -c package.path'):gsub('[\n\r]', ''), ';')
+
+  lua_settings = {
+    runtime = {
+      version = hs_version,
+      path = hs_path,
+    },
+    diagnostics = {
+      globals = { 'hs' }
+    },
+    workspace = {
+      library = {
+        string.format('%s/.hammerspoon/Spoons/EmmyLua.spoon/annotations', os.getenv('HOME')),
       },
     },
+    telemetry = {
+      enable = false,
+    },
+  }
+end
+
+require("lspconfig").sumneko_lua.setup {
+  settings = {
+    Lua = lua_settings
   },
 }
 

@@ -24,7 +24,7 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
     ['<C-d>'] = cmp.mapping.scroll_docs(4),
-    ['<A-e>'] = cmp.mapping.abort(),
+    ['<A-c>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm(),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
