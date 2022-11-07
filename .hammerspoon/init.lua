@@ -26,11 +26,14 @@ local function focus_to_screen(x, y)
     return (xx == x) and (yy == y) and w:isStandard() and w:isVisible()
   end)
 
-  local windows = f:getWindows()
-  if windows[1] == nil then
-    return
+  local window = f:getWindows()[1]
+  if window ~= nil then
+    window:focus()
   end
-  windows[1]:focus()
+  local screen = hs.screen{x, y}
+  if screen ~= nil then
+    hs.mouse.absolutePosition(screen:frame().center)
+  end
 end
 
 hs.hotkey.bind({ "cmd" }, "J", function()
