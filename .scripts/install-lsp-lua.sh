@@ -2,7 +2,7 @@
 
 set -e
 
-source ~/.scripts/colors.sh
+source $(eval pwd)/colors.sh
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   error "unimplemented for linux"

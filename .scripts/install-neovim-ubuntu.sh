@@ -2,7 +2,7 @@
 
 set -e
 
-source ~/.scripts/colors.sh
+source $(eval pwd)/colors.sh
 
 info "Adding neovim repo\n"
 apt-get install -y software-properties-common
